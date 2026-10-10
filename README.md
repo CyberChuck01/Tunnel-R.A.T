@@ -159,14 +159,80 @@ Result: Complete visibility and control of network traffic with remote access ca
 
 ## Installation
 
-See `install-tunnel-rat.sh` for automated setup, or follow the manual 10-step walkthrough in the repo.
+### Option 1: Git Clone (Recommended)
 
-**Quick start:**
 ```bash
 git clone https://github.com/CyberChuck01/Tunnel-R.A.T.git
-cd Tunnel-R.A.T.
+cd Tunnel-R.A.T
 sudo bash install-tunnel-rat.sh
 ```
+
+### Option 2: SCP Copy (If no git on device)
+
+**From your local machine (Windows/Mac/Linux), copy files to NanoPi:**
+
+```bash
+# Get the installer script
+scp install-tunnel-rat.sh root@192.168.1.X:/root/
+
+# SSH into device
+ssh root@192.168.1.X
+
+# Run installer
+cd /root
+sudo bash install-tunnel-rat.sh
+```
+
+**Windows (PowerShell):**
+
+```powershell
+# Copy installer using SCP
+scp C:\Users\cgese\Tunnel-R.A.T\install-tunnel-rat.sh root@192.168.1.X:/root/
+
+# SSH into device
+ssh root@192.168.1.X
+
+# Then on device:
+cd /root
+sudo bash install-tunnel-rat.sh
+```
+
+**If SCP not found on Windows:**
+- Install **Git Bash** from https://git-scm.com/download/win
+- Then use the same SCP command in Git Bash terminal
+
+### Option 3: Copy entire repo via SCP
+
+```bash
+# Copy entire Tunnel-R.A.T folder to device
+scp -r C:\Users\cgese\Tunnel-R.A.T root@192.168.1.X:/opt/
+
+# SSH into device
+ssh root@192.168.1.X
+
+# Move to correct location and run installer
+cd /opt/Tunnel-R.A.T
+sudo bash install-tunnel-rat.sh
+```
+
+---
+
+## Hardware Installation
+
+1. **Flash Armbian** on microSD card (NanoPi Zero2 compatible)
+2. **Boot device** with microSD
+3. **Connect ethernet** (USB-C to RJ45 adapter)
+4. **Find device IP:**
+   ```bash
+   nmap -sn 192.168.1.0/24
+   # Look for NanoPi hostname
+   ```
+5. **SSH into device:**
+   ```bash
+   ssh root@192.168.1.X
+   # Default password: 1234 (change after login!)
+   ```
+6. **Run installer** (using any option above)
 
 ---
 
