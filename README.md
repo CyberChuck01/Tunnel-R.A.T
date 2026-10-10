@@ -173,10 +173,10 @@ sudo bash install-tunnel-rat.sh
 
 ```bash
 # Get the installer script
-scp install-tunnel-rat.sh root@192.168.1.X:/root/
+scp install-tunnel-rat.sh root@10.0.0.243:/root/
 
 # SSH into device
-ssh root@192.168.1.X
+ssh root@10.0.0.243
 
 # Run installer
 cd /root
@@ -187,10 +187,10 @@ sudo bash install-tunnel-rat.sh
 
 ```powershell
 # Copy installer using SCP
-scp C:\Users\cgese\Tunnel-R.A.T\install-tunnel-rat.sh root@192.168.1.X:/root/
+scp C:\Users\cgese\Tunnel-R.A.T\install-tunnel-rat.sh root@10.0.0.243:/root/
 
 # SSH into device
-ssh root@192.168.1.X
+ssh root@10.0.0.243
 
 # Then on device:
 cd /root
@@ -205,10 +205,10 @@ sudo bash install-tunnel-rat.sh
 
 ```bash
 # Copy entire Tunnel-R.A.T folder to device
-scp -r C:\Users\cgese\Tunnel-R.A.T root@192.168.1.X:/opt/
+scp -r C:\Users\cgese\Tunnel-R.A.T root@10.0.0.243:/opt/
 
 # SSH into device
-ssh root@192.168.1.X
+ssh root@10.0.0.243
 
 # Move to correct location and run installer
 cd /opt/Tunnel-R.A.T
@@ -222,14 +222,10 @@ sudo bash install-tunnel-rat.sh
 1. **Flash Armbian** on microSD card (NanoPi Zero2 compatible)
 2. **Boot device** with microSD
 3. **Connect ethernet** (USB-C to RJ45 adapter)
-4. **Find device IP:**
-   ```bash
-   nmap -sn 192.168.1.0/24
-   # Look for NanoPi hostname
-   ```
+4. **Device IP:** `10.0.0.243` (or check with `nmap -sn 10.0.0.0/24`)
 5. **SSH into device:**
    ```bash
-   ssh root@192.168.1.X
+   ssh root@10.0.0.243
    # Default password: 1234 (change after login!)
    ```
 6. **Run installer** (using any option above)
