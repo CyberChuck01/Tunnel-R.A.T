@@ -1,0 +1,10 @@
+*.pcap
+*.pcapng
+captures/
+*.swp
+*.swo
+*~
+.DS_Store
+__pycache__/
+*.pyc
+.vscode/
