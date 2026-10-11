@@ -32,7 +32,21 @@ apt install -y \
     dnsmasq \
     tcpdump \
     openssh-server \
-    build-essential
+    build-essential \
+    openvpn \
+    openssl \
+    wireguard \
+    wireguard-tools \
+    python3 \
+    python3-pip \
+    flask \
+    nginx \
+    curl \
+    wget \
+    zip \
+    unzip \
+    shred \
+    cron
 
 echo "[3/6] Creating project directory..."
 mkdir -p /opt/tunnel-rat/{scripts,config,caplets,captures,docs}

