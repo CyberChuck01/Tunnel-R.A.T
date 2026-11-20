@@ -1,0 +1,29 @@
+# Tunnel R.A.T. — Bettercap caplet
+#
+# Loads a safe starting profile for authorized testing. It does NOT enable
+# any redirection or interception on its own — it only shows the network and
+# turns on event/logging so you can see what you are doing. Enable individual
+# features by hand, and only within a scope you are permitted to test.
+
+# Show interfaces, gateway and discovered hosts
+net.show
+
+# Passive traffic visibility
+set net.sniff true
+
+# Scope for ARP features (set to YOUR authorized test range in tunnel-rat.conf).
+# Left narrow by default so nothing runs network-wide by accident.
+set arp.spoof.targets ""
+set arp.spoof.whitelist ""
+set arp.spoof.fullduplex true
+
+# Logging
+set log.level info
+events.stream on
+
+print "[*] Tunnel R.A.T. caplet loaded (authorized testing only)."
+print "[*] Nothing is intercepting yet. Enable features deliberately, e.g.:"
+print "    set arp.spoof.targets <host-in-your-scope>"
+print "    arp.spoof on       # only on networks you are permitted to test"
+print "    net.probe on       # active host discovery"
+print "    help               # list all modules"
